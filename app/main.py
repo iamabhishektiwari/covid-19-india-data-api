@@ -17,7 +17,7 @@ def tableData(soup):
 	tab_ = table.find_all('tr');
 	time = soup.find('div',class_="status-update").find('span')
 	response['update-time'] = time.text
-	f = open('table.html','w')
+	f = open('data/table.html','w')
 	f.write(str(table))
 	f.write(str(time))
 	
@@ -32,7 +32,7 @@ def tableData(soup):
 
 	response['data'] = data
 
-	with open('data.json', 'w') as writer:
+	with open('data/data.json', 'w') as writer:
 		json.dump(response, writer)
 
 	return response
