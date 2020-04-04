@@ -7,7 +7,8 @@ import json
 url = "https://mohfw.gov.in"
 
 
-
+app = flask.Flask(__name__)
+app.config["DEBUG"] = True
 
 def tableData(soup):
 	data = {}
@@ -64,8 +65,6 @@ def District(soup):
 	return link
 
 
-app = flask.Flask(__name__)
-app.config["DEBUG"] = True
 
 
 @app.route('/', methods=['GET'])
@@ -82,6 +81,5 @@ def stateData():
 def districtData():
 	return District(getUrl(url))
 
-app.run()
 
 
