@@ -1,5 +1,5 @@
 import pandas as pd 
-
+from datetime import datetime
 
 
 def retTimeSeries():
@@ -16,17 +16,11 @@ def retTimeSeries():
 	recovered = recovered.drop(['Province/State','Lat','Long','Country/Region'], axis=1)
 
 	con = {}
-	dea = {}
-	rec = {}
-	for col in confirm:
-	    con[col+"20"] = confirm[col].tolist()[0]
-	for col in deaths:
-	    dea[col+"20"] = deaths[col].tolist()[0]
-	for col in recovered:
-	    rec[col+"20"] = recovered[col].tolist()[0]
+	for col1 in confirm:
+		date_str = ""+col1+"20"
+		key = datetime.strptime(date_str, '%m/%d/%Y').date()		
+		con[str(key)] = {'confirmed':confirm[col1].tolist()[0],'deaths':deaths[col1].tolist()[0],'recovered':recovered[col1].tolist()[0]}
 
-	timeseriesData['confirmed'] = con
-	timeseriesData['deaths'] = dea
-	timeseriesData['recovered'] = rec
+	timeseriesData['data'] = con
 
 	return timeseriesData
