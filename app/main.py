@@ -2,7 +2,7 @@ import flask
 import requests
 from bs4 import BeautifulSoup
 import json
-from app.timeSeries import retTimeSeries
+from app.timeSeries import retTimeSeries, retDistrictData, retGlobalTimeSeriesData,Write
 
 url = "https://mohfw.gov.in"
 
@@ -32,7 +32,7 @@ def tableData(soup):
 
 	response['data'] = data
 
-	with open('data/data.json', 'w') as writer:
+	with open('data/State_data.json', 'w') as writer:
 		json.dump(response, writer)
 
 	return response
@@ -70,18 +70,46 @@ def District(soup):
 @app.route('/', methods=['GET'])
 def home():
 	#return tableData();
-    return "<h1>Distant Reading Archive</h1>Api for Covid Data for India</p> <li><ui> <a href='/getStateData'> State Data</a> </ui><ui> <a href='/districtData'>District Data</a> </ui><ui> <a href='/timeSeries'>TimeSeries Data</a> </ui></li>"
+    return "<h1>Distant Reading Archive</h1>Api for Covid Data for India</p> <li><ui> <a href='/getStateData'> State Data</a> </ui><ui> <a href='/districtpdfurl'>District Pdf Data</a> </ui><ui> <a href='/timeSeries'>TimeSeries Data</a> </ui><ui> <a href='/getDistrictData'> District wise Data</a> </ui><ui> <a href='/GlobalTimeSeries'> Global TimeSeries</a> </ui></li>"
 
 @app.route('/getStateData',methods=['GET'])
 def stateData():
 	return tableData(getUrl(url))
 
 
-@app.route('/districtData',methods=['GET'])
-def districtData():
+@app.route('/districtpdfurl',methods=['GET'])
+def districtpdfurl():
 	return District(getUrl(url))
 
 
 @app.route('/timeSeries',methods=['GET'])
 def TimeSeries():
 	return retTimeSeries()
+
+
+@app.route('/getDistrictData',methods=['GET'])
+def DistrictData():
+	return retDistrictData();
+
+
+
+@app.route('/GlobalTimeSeries',methods=['GET'])
+def GlobalTimeSeries():
+	return retGlobalTimeSeriesData()
+
+
+
+@app.route('/abhishek',methods=['GET'])
+def Update_data():
+	Write()
+	return "success"
+
+
+
+
+
+
+
+
+
+
