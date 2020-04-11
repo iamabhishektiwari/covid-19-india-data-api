@@ -27,8 +27,11 @@ def Write_GlobalTimeSeries():
 	recovered = recovered.groupby(['Country/Region']).sum()
 	cordinates = cordinates.groupby(['Country/Region']).mean()
 
+	dateinfo = []
+
 	for r in confirm:
 		confirm.rename(columns = {r:r.replace('/','-')}, inplace = True)
+		dateinfo.append(r.replace('/','-'));
 
 	for r in recovered:
 		recovered.rename(columns = {r:r.replace('/','-')}, inplace = True)
@@ -44,6 +47,9 @@ def Write_GlobalTimeSeries():
 	deaths.to_json('data/deaths.json',orient='index')
 	recovered.to_json('data/recovered.json',orient='index')
 	cordinates.to_json('data/cordinates.json',orient='index')
+
+	with open('data/dateinfo.json', 'w') as outfile:
+		json.dump(str(dateinfo), outfile)
 
 
 def Write_timeline():
@@ -126,6 +132,13 @@ def writeFinal_GlobalTimeSeriesData():
 
 def retGlobalTimeSeriesData():
 	with open('data/global_timeline.json', "r") as read_file:
+		data = json.load(read_file)
+
+	return data
+
+
+def retDateinfo():
+	with open('data/dateinfo.json', "r") as read_file:
 		data = json.load(read_file)
 
 	return data
