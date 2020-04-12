@@ -73,7 +73,7 @@ def Write_districtWise():
 		'x-rapidapi-key': "78144a9bd9msh16e7e3bc08ebff0p1d5199jsn8b8bdd31763d"
 		}
 	response = requests.request("GET", url, headers=headers).json()
-	#print(response)
+	print(response)
 
 	if('state_wise' in response):
 		with open('data/districtWise.json', 'w') as outfile:
