@@ -74,8 +74,12 @@ def Write_districtWise():
 		}
 	response = requests.request("GET", url, headers=headers).json()
 
-	with open('data/districtWise.json', 'w') as outfile:
-		json.dump(response, outfile)
+	if('state_wise' in response):
+		with open('data/districtWise.json', 'w') as outfile:
+			json.dump(response, outfile)
+		print("districtWise data updated")
+	else:
+		print("api error")
 
 
 def retTimeSeries():
