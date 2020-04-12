@@ -144,9 +144,34 @@ def retDateinfo():
 	return data
 
 
+
+def Write_Globaldata():
+	url = "https://covid-19-coronavirus-statistics.p.rapidapi.com/v1/stats"
+	querystring = {"country":"Canada"}
+	headers = {
+		'x-rapidapi-host': "covid-19-coronavirus-statistics.p.rapidapi.com",
+		'x-rapidapi-key': "78144a9bd9msh16e7e3bc08ebff0p1d5199jsn8b8bdd31763d"
+		}
+	page = requests.request("GET", url, headers=headers).json()
+	with open('data/Global_data.json', 'w') as outfile:
+		json.dump(page, outfile)
+
+
+
+def retGlobaldata():
+	with open('data/Global_data.json', "r") as read_file:
+		data = json.load(read_file)
+
+	return data
+
+
+
+
+
 def Write():
 	Write_timeline()
 	Write_districtWise()
 	Write_GlobalTimeSeries()
 	writeFinal_GlobalTimeSeriesData()
+	Write_Globaldata()
 #Write()
