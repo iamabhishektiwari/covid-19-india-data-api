@@ -1,4 +1,4 @@
-import pandas as pd 
+import pandas as pd
 from datetime import datetime
 import requests
 import json
@@ -7,9 +7,9 @@ import json
 
 
 def Write_GlobalTimeSeries():
-	confirm = pd.read_csv('data/time_series_covid19_confirmed_global.csv')
-	deaths = pd.read_csv('data/time_series_covid19_deaths_global.csv')
-	recovered = pd.read_csv('data/time_series_covid19_recovered_global.csv')
+	confirm = pd.read_csv('time_series_covid19_confirmed_global.csv')
+	deaths = pd.read_csv('time_series_covid19_deaths_global.csv')
+	recovered = pd.read_csv('time_series_covid19_recovered_global.csv')
 	cordinates = recovered[['Country/Region','Lat','Long']]
 
 	del confirm['Province/State']
@@ -43,12 +43,12 @@ def Write_GlobalTimeSeries():
 		cordinates.rename(columns = {r:r.replace('/','-')}, inplace = True)
 
 
-	confirm.to_json('data/confirm.json',orient='index')
-	deaths.to_json('data/deaths.json',orient='index')
-	recovered.to_json('data/recovered.json',orient='index')
-	cordinates.to_json('data/cordinates.json',orient='index')
+	confirm.to_json('confirm.json',orient='index')
+	deaths.to_json('deaths.json',orient='index')
+	recovered.to_json('recovered.json',orient='index')
+	cordinates.to_json('cordinates.json',orient='index')
 
-	with open('data/dateinfo.json', 'w') as outfile:
+	with open('dateinfo.json', 'w') as outfile:
 		json.dump(str(dateinfo), outfile)
 
 
@@ -60,8 +60,8 @@ def Write_timeline():
 		}
 	response = requests.request("GET", url, headers=headers)
 
-	
-	with open('data/timeline.json', 'w') as outfile:
+
+	with open('timeline.json', 'w') as outfile:
 		json.dump(response.text, outfile)
 
 
@@ -74,18 +74,18 @@ def Write_districtWise():
 		}
 	response = requests.request("GET", url, headers=headers).json()
 
-	with open('data/districtWise.json', 'w') as outfile:
+	with open('districtWise.json', 'w') as outfile:
 		json.dump(response, outfile)
 
 
 def retTimeSeries():
-	with open('data/timeline.json', "r") as read_file:
+	with open('timeline.json', "r") as read_file:
 		data = json.load(read_file)
 
 	return data
 
 def retDistrictData():
-	with open('data/districtWise.json', "r") as read_file:
+	with open('districtWise.json', "r") as read_file:
 		data = json.load(read_file)
 
 	return data
@@ -97,20 +97,20 @@ def writeFinal_GlobalTimeSeriesData():
 	recovered = {}
 	deaths = {}
 	cordinates = {}
-	with open('data/confirm.json', "r") as read_file:
+	with open('confirm.json', "r") as read_file:
 		confirm = json.load(read_file)
 
-	with open('data/recovered.json', "r") as read_file:
+	with open('recovered.json', "r") as read_file:
 		recovered = json.load(read_file)
 
-	with open('data/deaths.json', "r") as read_file:
+	with open('deaths.json', "r") as read_file:
 		deaths = json.load(read_file)
 
-	with open('data/cordinates.json', "r") as read_file:
+	with open('cordinates.json', "r") as read_file:
 		cordinates = json.load(read_file)
 
 	combined_dict = {}
-	
+
 	for country in cordinates:
 		tmp = {}
 		for dte in confirm[country]:
@@ -126,19 +126,19 @@ def writeFinal_GlobalTimeSeriesData():
 				'data':tmp
 		}
 
-	with open('data/global_timeline.json', 'w') as outfile:
+	with open('global_timeline.json', 'w') as outfile:
 		json.dump(combined_dict, outfile)
 
 
 def retGlobalTimeSeriesData():
-	with open('data/global_timeline.json', "r") as read_file:
+	with open('global_timeline.json', "r") as read_file:
 		data = json.load(read_file)
 
 	return data
 
 
 def retDateinfo():
-	with open('data/dateinfo.json', "r") as read_file:
+	with open('dateinfo.json', "r") as read_file:
 		data = json.load(read_file)
 
 	return data

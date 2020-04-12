@@ -2,7 +2,7 @@ import flask
 import requests
 from bs4 import BeautifulSoup
 import json
-from app.timeSeries import retTimeSeries, retDistrictData, retGlobalTimeSeriesData,Write, retDateinfo
+from .timeSeries import retTimeSeries, retDistrictData, retGlobalTimeSeriesData,Write, retDateinfo
 
 url = "https://mohfw.gov.in"
 
@@ -17,10 +17,10 @@ def tableData(soup):
 	tab_ = table.find_all('tr');
 	time = soup.find('div',class_="status-update").find('span')
 	response['update-time'] = time.text
-	f = open('data/table.html','w')
+	f = open('table.html','w')
 	f.write(str(table))
 	f.write(str(time))
-	
+
 	for tr in tab_:
 		tds = tr.find_all('td')
 		if(len(tds)==5):
@@ -32,7 +32,7 @@ def tableData(soup):
 
 	response['data'] = data
 
-	with open('data/State_data.json', 'w') as writer:
+	with open('State_data.json', 'w') as writer:
 		json.dump(response, writer)
 
 	return response
@@ -46,7 +46,7 @@ def getUrl(url):
 
 
 def DistrictLink(soup):
-	
+
 	links = soup.find_all('a')
 	link = "-";
 
@@ -58,7 +58,7 @@ def DistrictLink(soup):
 			break;
 
 	return link
-	
+
 
 def District(soup):
 	link = DistrictLink(soup);
@@ -108,10 +108,3 @@ def Update_data():
 @app.route('/Dateinfo',methods=['GET'])
 def Dateinfo():
 	return retDateinfo()
-
-
-
-
-
-
-
